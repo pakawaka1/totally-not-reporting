@@ -59,12 +59,9 @@ export class AdvSearchComponent implements OnInit {
         ref: 'vote_count',
         type: 'number'
     }];
-
     fullFormGroup: FormGroup;
-    firstFormGroup: FormGroup;
-    secondFormGroup: FormGroup;
-    thirdFormGroup: FormGroup;
     droppedItems = [];
+    selection: true;
 
     public selectedCategory: CategorySelection;
     public categoryValueNum: number;
