@@ -65,18 +65,11 @@ export class AdvSearchComponent implements OnInit {
         type: 'number'
     }];
     fullFormGroup: FormGroup;
-    firstFormGroup: FormControl;
-    secondFormGroup: FormControl;
-    thirdFormGroup: FormControl;
     droppedItems = [];
     selection: true;
 
 
-    fullFormGroup: FormGroup;
-    firstFormGroup: FormGroup;
-    secondFormGroup: FormGroup;
-    thirdFormGroup: FormGroup;
-    droppedItems = [];
+
 
     public selectedCategory: CategorySelection;
 
