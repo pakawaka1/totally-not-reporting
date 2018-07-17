@@ -6,6 +6,7 @@ import { IMovie } from '../../interfaces/movie';
 import { MatDialog } from '@angular/material';
 import { ModalComponent } from './modal.component';
 import { Router } from '@angular/router';
+import { CsvService } from '../../services/csv.service';
 
 @Component({
     selector: 'app-result',
@@ -14,11 +15,17 @@ import { Router } from '@angular/router';
 })
 
 export class ResultComponent implements OnInit {
+  public ratings: number[];
+  public isHover = false;
+  public storedResults: any;
+  private _rawResults: any;
+  public resultSub: Subscription;
+  public rate;
 
-    public storedResults: any;
-    private _rawResults: any;
-    public resultSub: Subscription;
-    
+  // csvdata
+  public csvData: any;
+  private _blob: Blob;
+
     // piechart options
     public showLegend = true;
     public view: any[] = [700, 400];
@@ -28,20 +35,33 @@ export class ResultComponent implements OnInit {
     public showLabels = true;
     public explodeSlices = false;
     public doughnut = true;
-    public pieData:any;
+    public pieData: any;
 
 
-    constructor(private _search: SearchService, public dialog: MatDialog, private _router: Router) {}
+    constructor(private _search: SearchService, public dialog: MatDialog, private _router: Router, private _csv: CsvService) {}
 
     ngOnInit(): void {
         this._search.resultsSubscription().subscribe(results => {
             this._rawResults = results.result;
-
             this.storedResults = new MatTableDataSource<IMovie>(this._rawResults);
+            this.ratings = Array(5); // [0,1,2,3,4]
+            this.rate = (r) => (this.ratings = r);
+            const fields:string[] = [];
+            for (let key in results.result) {
+                fields.push[key];
+            }
+            this.csvData = this._csv.create(results.result, fields);
+            this._blob = new Blob ([this.csvData], {
+                type: 'text/csv'
+            });
         });
 
         this._search.refreshResults();
     }
+
+  public exportToCsv() {
+    this._csv.download(this._blob);
+  }
 
     public stringCutoff(string: string, maxLength) {
         if (!string) { return string; } else {
@@ -70,6 +90,6 @@ export class ResultComponent implements OnInit {
 
 
     onSelect(event) {
-        console.log(event);
+        // console.log(event);
     }
-}
+  }
