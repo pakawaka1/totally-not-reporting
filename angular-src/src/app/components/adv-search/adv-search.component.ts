@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { CategorySelection } from '../../interfaces/category-selection';
 import { IDynamicRequest } from '../../interfaces/dynamic-request';
@@ -93,7 +93,7 @@ export class AdvSearchComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public submit(value) {
+    public submitGraph(value) {
         this.droppedItems.forEach(item => {
           this.requestedColumns[item.ref] = true;
         });
@@ -130,4 +130,4 @@ export class AdvSearchComponent implements OnInit {
       list.splice(index, 1);
     }
 
-}
+  }
