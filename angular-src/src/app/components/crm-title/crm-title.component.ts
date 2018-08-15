@@ -12,15 +12,15 @@ import { Router } from '../../../../node_modules/@angular/router';
 
 export class CRMTitleComponent implements OnInit {
 
-    public clientList:IClient[] = []
+    public clientList: IClient[] = [];
     constructor(private _crm: CRMDataService, private _router: Router) {}
 
     ngOnInit(): void {
         this._crm.getClients().pipe( take(1) ).subscribe(response => {
-            if(response && response.result) {
+            if (response && response.result) {
                 console.log('response:', response);
                 this.clientList = response.result;
-            };
+            }
         });
     }
 
