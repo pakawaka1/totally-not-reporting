@@ -82,14 +82,9 @@ export class CRMTop5Component implements OnInit {
     public plotShowYAxis = true;
     public plotShowLegend = true;
     public plotShowXAxisLabel = true;
-    public xAxisLabel = 'Years';
-    public x2AxisLabel = 'Run Time';
+    public xAxisLabel = 'Number of Autos';
     public showYAxisLabel = true;
-    public yAxisLabel = 'Run Time';
-    public y2AxisLabel = 'Count';
-    public runtimeYear;
-    public runtimeCount;
-    public startYear: number;
+    public yAxisLabel = 'Price of Autos';
 
   constructor(private _crm: CRMDataService, private _router: Router) {}
 
@@ -163,10 +158,10 @@ export class CRMTop5Component implements OnInit {
       for (const client of top5Client) {
           const lineObj = {
             name: client.client_name,
-            value: client.penetration_ratio
+            value: client.penetration_ratio,
           };
           this.lineData.push(lineObj);
-
+      console.log(this.lineData);
       }
     }
 
@@ -192,7 +187,7 @@ export class CRMTop5Component implements OnInit {
         const plotObj = [
             {
               name: client.client_name,
-              value: client.Math.ceil((Math.random() * 10)),
+              value: Math.ceil((Math.random() * 100)),
             }, {
               name: client.client_name,
               value: client.auto
