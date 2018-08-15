@@ -15,7 +15,9 @@ export class CRMTop5Component implements OnInit {
     public top5Credit;
     public top5Acquisition;
     public top5Secured;
-    public top5Auto;
+    public top5Unsecured;
+    public top5NumberAuto;
+    public top5PriceAuto;
 
     // bar options
     public barData;
@@ -58,18 +60,38 @@ export class CRMTop5Component implements OnInit {
     public lineXAxisLabel = 'Company';
     public lineShowYAxisLabel = true;
     public lineYAxisLabel = '';
-    // public lineColorScheme = {
-    //    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-    //   };
+    public lineColorScheme = {
+       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      };
 
 
      // pie options
+    public pieShowLabels = true;
+    public pieExplodeSlices = false;
+    public pieDoughnut = true;
+    public pieData: any;
+    public pieShowLegend = true;
+    public colorScheme = {
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      };
 
-     //scatterplot options
+     // scatterplot options
+    public plotData: any;
+    public plotView: any[] = [700, 400];
+    public plotShowXAxis = true;
+    public plotShowYAxis = true;
+    public plotShowLegend = true;
+    public plotShowXAxisLabel = true;
+    public xAxisLabel = 'Years';
+    public x2AxisLabel = 'Run Time';
+    public showYAxisLabel = true;
+    public yAxisLabel = 'Run Time';
+    public y2AxisLabel = 'Count';
+    public runtimeYear;
+    public runtimeCount;
+    public startYear: number;
 
-
-
-    constructor(private _crm: CRMDataService, private _router: Router) {}
+  constructor(private _crm: CRMDataService, private _router: Router) {}
 
     ngOnInit(): void {
         this._crm.getClientsAndAccounts().subscribe(list => {
@@ -82,20 +104,41 @@ export class CRMTop5Component implements OnInit {
         list = this._sortList(list, 'total_shares');
         this.top5Shares = list.slice(0, 5);
         this._prepareSharesBarData(this.top5Shares);
+
         list = this._sortList(list, 'line_of_credit');
         this.top5Credit = list.slice(0, 5);
         this._prepareCreditBarData(this.top5Credit);
+
+        list = this._sortList(list, 'penetration_ratio');
+        this.top5Acquisition = list.slice(0, 5);
+        this._prepareAcquisitionLineData(this.top5Acquisition);
+
+        list = this._sortList(list, 'secured');
+        this.top5Secured = list.slice(0, 5);
+        this._prepareSecuredUnsecuredData(this.top5Secured);
+
+        list = this._sortList(list, 'unsecured');
+        this.top5Unsecured = list.slice(0, 5);
+        this._prepareSecuredUnsecuredData(this.top5Unsecured);
+
+        list = this._sortList(list, 'number');
+        this.top5NumberAuto = list.slice(0, 5);
+        this._prepareAutoData(this.top5NumberAuto);
+
+        list = this._sortList(list, 'price');
+        this.top5PriceAuto = list.slice(0, 5);
+        this._prepareAutoData(this.top5PriceAuto);
     }
 
     private _sortList(list: any[], category: string) {
         // console.log(list);
-        list.sort( (a, b) => {return b[category] - a[category]});
+        list.sort( (a, b) => b[category] - a[category]);
         return list;
     }
 
     private _prepareSharesBarData(top5Client: any[]) {
         this.barData = [];
-        for (let client of top5Client) {
+        for (const client of top5Client) {
             const barObj = {
                 name: client.client_name,
                 value: client.total_shares
@@ -105,18 +148,62 @@ export class CRMTop5Component implements OnInit {
     }
 
     private _prepareCreditBarData(top5Client: any[]) {
-        this.bar2Data = [];
-        for (let client of top5Client) {
-            const barObj = {
-                name: client.client_name,
-                value: client.line_of_credit
-            };
-            this.bar2Data.push(barObj);
+      this.bar2Data = [];
+      for (const client of top5Client) {
+          const barObj = {
+              name: client.client_name,
+              value: client.line_of_credit
+          };
+          this.bar2Data.push(barObj);
         }
     }
 
+    private _prepareAcquisitionLineData(top5Client: any[]) {
+      this.lineData = [];
+      for (const client of top5Client) {
+          const lineObj = {
+            name: client.client_name,
+            value: client.penetration_ratio
+          };
+          this.lineData.push(lineObj);
+
+      }
+    }
+
+    private _prepareSecuredUnsecuredData(top5Client: any[]) {
+      this.pieData = [];
+      for (const client of top5Client) {
+        const pieObj = [
+            {
+              name: client.client_name,
+              value: client.secured,
+            }, {
+              name: client.client_name,
+              value: client.unsecured,
+            }
+          ];
+        this.pieData.push(pieObj);
+        }
+      }
+
+    private _prepareAutoData(top5Client: any[]) {
+      this.pieData = [];
+      for (const client of top5Client) {
+        const plotObj = [
+            {
+              name: client.client_name,
+              value: client.Math.ceil((Math.random() * 10),
+            }, {
+              name: client.client_name,
+              value: client.auto
+            }
+          ];
+        this.plotData.push(plotObj);
+        }
+      }
+
     public millions(num: number): string {
-        if (typeof num != 'number') {
+        if (typeof num !== 'number') {
             if (num['value']) { num = num['value']}
             else if (num['cell']) { num = num['cell']['value']}
         } // account for the graphs not passing a number
@@ -127,8 +214,9 @@ export class CRMTop5Component implements OnInit {
         }
     }
 
-    public onSelect(event:any) {
+    public onSelect(event: any) {
         const destinationClient = this.clientList.filter( client => client.client_name === event.name)[0].client_id;
         this._router.navigate(['../../crm/detail', destinationClient]);
     }
 }
+

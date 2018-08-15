@@ -86,7 +86,7 @@ export class RunTimeChartComponent implements OnInit {
             this.runtimeYear.push(obj1);
             this.runtimeCount.push(obj2)
             };
-          })    
+          })
     });
   }
 
@@ -96,7 +96,7 @@ export class RunTimeChartComponent implements OnInit {
     } else {
       this.startYear = this.yearValue[0]
       this.count(this.yearValue[0],this.yearValue[1])
-    }    
+    }
   }
 
   private snackBarMessage(message: string) {
