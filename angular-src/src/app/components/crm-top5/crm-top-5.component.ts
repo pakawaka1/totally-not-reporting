@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 
 export class CRMTop5Component implements OnInit {
-    
+
     private clientList = [];
     public top5Shares;
     public top5Credit;
@@ -24,7 +24,7 @@ export class CRMTop5Component implements OnInit {
     public barShowXAxisLabel = true;
     public barXAxisLabel = 'Company';
     public barShowYAxisLabel = true;
-    public barYAxisLabel = "Total Shares";
+    public barYAxisLabel = 'Total Shares';
     public barColorScheme = {
        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
      };
@@ -39,17 +39,39 @@ export class CRMTop5Component implements OnInit {
     public bar2ShowXAxisLabel = true;
     public bar2XAxisLabel = 'Company';
     public bar2ShowYAxisLabel = true;
-    public bar2YAxisLabel = "Line of Credit";
+    public bar2YAxisLabel = '';
     public bar2ColorScheme = {
        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
      };
+
+     // line options
+    public lineData;
+    public lineDataTwo;
+    public lineShowXAxis = true;
+    public lineShowYAxis = true;
+    public lineGradient = true;
+    public lineShowLegend = false;
+    public lineShowXAxisLabel = true;
+    public lineXAxisLabel = 'Company';
+    public lineShowYAxisLabel = true;
+    public lineYAxisLabel = '';
+    public lineColorScheme = {
+       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      };
+
+
+     // pie options
+
+     //scatterplot options
+
+
 
     constructor(private _crm: CRMDataService, private _router: Router) {}
 
     ngOnInit(): void {
         this._crm.getClientsAndAccounts().subscribe(list => {
             this.clientList = list.result;
-            this._initTop5(this.clientList)
+            this._initTop5(this.clientList);
         });
     }
 
@@ -65,7 +87,7 @@ export class CRMTop5Component implements OnInit {
     private _sortList(list: any[], category: string) {
         // console.log(list);
         list.sort( (a, b) => {return b[category] - a[category]});
-        return list
+        return list;
     }
 
     private _prepareSharesBarData(top5Client: any[]) {
