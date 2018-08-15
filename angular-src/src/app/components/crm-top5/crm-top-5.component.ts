@@ -13,6 +13,9 @@ export class CRMTop5Component implements OnInit {
     private clientList = [];
     public top5Shares;
     public top5Credit;
+    public top5Acquisition;
+    public top5Secured;
+    public top5Auto;
 
     // bar options
     public barData;
@@ -55,9 +58,9 @@ export class CRMTop5Component implements OnInit {
     public lineXAxisLabel = 'Company';
     public lineShowYAxisLabel = true;
     public lineYAxisLabel = '';
-    public lineColorScheme = {
-       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-      };
+    // public lineColorScheme = {
+    //    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    //   };
 
 
      // pie options
