@@ -187,12 +187,12 @@ export class CRMTop5Component implements OnInit {
       }
 
     private _prepareAutoData(top5Client: any[]) {
-      this.pieData = [];
+      this.plotData = [];
       for (const client of top5Client) {
         const plotObj = [
             {
               name: client.client_name,
-              value: client.Math.ceil((Math.random() * 10);
+              value: client.Math.ceil((Math.random() * 10)),
             }, {
               name: client.client_name,
               value: client.auto
