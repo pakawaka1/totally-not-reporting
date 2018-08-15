@@ -95,6 +95,7 @@ export class CRMTop5Component implements OnInit {
 
     ngOnInit(): void {
         this._crm.getClientsAndAccounts().subscribe(list => {
+            console.log(list.result);
             this.clientList = list.result;
             this._initTop5(this.clientList);
         });

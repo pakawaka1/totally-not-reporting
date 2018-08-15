@@ -33,3 +33,16 @@
         (select)="onSelect($event)">
     </ngx-charts-bar-vertical>
 </div>
+
+
+<h1 class="text-center">Plot Data</h1>
+<div class="bar-chart">
+    <ngx-charts-bubble-chart
+        [results]= "plotData"
+        [showXAxisLabel]="plotShowXAxisLabel"
+        [xAxisLabel]="x2AxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [yAxisLabel]="y2AxisLabel"
+        (select)="onSelect($event)">
+  </ngx-charts-bubble-chart>
+</div>
