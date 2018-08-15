@@ -192,7 +192,7 @@ export class CRMTop5Component implements OnInit {
         const plotObj = [
             {
               name: client.client_name,
-              value: client.Math.ceil((Math.random() * 10),
+              value: client.Math.ceil((Math.random() * 10);
             }, {
               name: client.client_name,
               value: client.auto
