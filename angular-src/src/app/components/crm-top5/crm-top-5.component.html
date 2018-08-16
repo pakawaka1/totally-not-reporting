@@ -35,14 +35,35 @@
 </div>
 
 
-<h1 class="text-center">Plot Data</h1>
-<div class="bar-chart">
-    <ngx-charts-bubble-chart
-        [results]= "plotData"
-        [showXAxisLabel]="plotShowXAxisLabel"
-        [xAxisLabel]="x2AxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [yAxisLabel]="y2AxisLabel"
+<h1 class="text-center">Acquisition Line Data</h1>
+<div class="bar-chart" *ngIf="lineData">
+    <ngx-charts-line-chart
+        [scheme]="lineColorScheme"
+        [results]="lineData"
+        [gradient]="lineGradient"
+        [xAxis]="lineShowXAxis"
+        [yAxis]="lineShowYAxis"
+        [legend]="lineShowLegend"
+        [showXAxisLabel]="lineShowXAxisLabel"
+        [showYAxisLabel]="lineShowYAxisLabel"
+        [xAxisLabel]="lineXAxisLabel"
+        [yAxisLabel]="lineYAxisLabel"
         (select)="onSelect($event)">
-  </ngx-charts-bubble-chart>
+    </ngx-charts-line-chart>
+</div>
+
+
+<h1 class="text-center">Scatter Plot</h1>
+<div class="bar-chart" *ngIf="plotData">
+    <ngx-charts-bubble-chart
+        [results]="plotData"
+        [xAxis]="plotShowXAxis" 
+        [yAxis]="plotShowYAxis"
+        [showXAxisLabel]="plotShowXAxisLabel"
+        [showYAxisLabel]="plotShowYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [yAxisTickFormatting]=""
+        (select)="onSelect($event)">
+    </ngx-charts-bubble-chart>
 </div>
