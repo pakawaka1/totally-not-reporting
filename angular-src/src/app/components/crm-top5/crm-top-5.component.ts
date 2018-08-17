@@ -18,7 +18,7 @@ export class CRMTop5Component implements OnInit {
     public top5Unsecured;
     public top5NumberAuto;
     public top5PriceAuto;
-
+    public top5Pie;
 
     // bar options
     public barData;
@@ -45,11 +45,10 @@ export class CRMTop5Component implements OnInit {
     public bar2ShowXAxisLabel = true;
     public bar2XAxisLabel = 'Company';
     public bar2ShowYAxisLabel = true;
-    public bar2YAxisLabel = '';
+    public bar2YAxisLabel = 'Line of Credit';
     public bar2ColorScheme = {
        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
      };
-
 
     // line options
     public lineData;
@@ -66,51 +65,48 @@ export class CRMTop5Component implements OnInit {
       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
       };
 
-     // pie options
-    public securedPieData;
-    public unsecuredPieData;
-    public view: any[] = [1500, 1500];
-    public showXAxis = true;
-    public showYAxis = true;
-    public gradient = false;
-    public showLegend = true;
-    public showXAxisLabel = true;
-    public xAxisLabel = 'Secured';
-    public showYAxisLabel = true;
-    public yAxisLabel = 'Unsecured';
-    public colorScheme = {
-      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-      };
-
-    public pieData: any[] = [
-      {
-        name: 'Secured',
-        value: 26026015
-      },
-      {
-        name: 'Unsecured',
-        value: 18673229
-      }
-    ];
-
     // scatterplot options
     public plotData: any;
     public plotView: any[] = [700, 400];
     public plotShowXAxis = true;
     public plotShowYAxis = true;
     public plotShowXAxisLabel = true;
-    public plotShowYAxisLabel = true;
     public plotXAxisLabel = 'Number of Loans';
-    public plotAxisLabel = 'Total dollar amount of loans';
+    public plotShowYAxisLabel = true;
+    public plotYAxisLabel = 'Total dollar amount of loans';
+    public plotColorScheme = {
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      };
 
+
+    // pie options
+    public newCounter1: number;
+    public newCounter2: number;
+    public securedPieData;
+    public newSecuredPieData;
+    public unsecuredPieData;
+    public newUnsecuredPieData;
+    public view: any[] = [1500, 1500];
+    public showXAxis = true;
+    public showYAxis = true;
+    public gradient = true;
+    public showLegend = true;
+    public pieShowXAxisLabel = true;
+    public pieXAxisLabel = 'Secured';
+    public pieShowYAxisLabel = true;
+    public pieYAxisLabel = 'Unsecured';
+    public pieColorScheme = {
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      };
+    public pieData: any[];
 
   constructor(private _crm: CRMDataService, private _router: Router) {}
 
     ngOnInit(): void {
-        this._crm.getClientsAndAccounts().subscribe(list => {
-            this.clientList = list.result;
-            this._initTop5(this.clientList);
-        });
+      this._crm.getClientsAndAccounts().subscribe(list => {
+          this.clientList = list.result;
+          this._initTop5(this.clientList);
+      });
     }
 
     private _initTop5(list: any[]) {
@@ -122,13 +118,9 @@ export class CRMTop5Component implements OnInit {
         this.top5Credit = list.slice(0, 5);
         this._prepareCreditBarData(this.top5Credit);
 
-        // list = this._sortList(list, 'secured');
-        // this.top5Secured = list.slice(0,5 );
-        // this._prepareSecuredData(this.top5Secured);
-
-        // list = this._sortList(list, 'unsecured');
-        // this.top5Unsecured = list.slice(0, 5);
-        // this._prepareUnsecuredData(this.top5Unsecured);
+        list = this._sortList(list, 'secured/unsecured');
+        this.top5Secured = list.slice(0, 5);
+        this._prepareSecuredData(this.top5Secured);
 
         list = this._sortList(list, 'penetration_ratio');
         this.top5Acquisition = list.slice(0, 5);
@@ -145,7 +137,6 @@ export class CRMTop5Component implements OnInit {
 
 
     private _sortList(list: any[], category: string) {
-        // console.log(list);
         list.sort( (a, b) => b[category] - a[category]);
         return list;
     }
@@ -178,47 +169,13 @@ export class CRMTop5Component implements OnInit {
                 series: []
             }];
       for (const client of top5Client) {
-          let lineObj = {
+          const lineObj = {
                 name: client.client_name,
                 value: client.penetration_ratio,
             };
             this.lineData[0]['series'].push(lineObj);
         }
     }
-
-    // private _prepareSecuredData(top5Client: any[]) {
-    //     this.securedPieData = [];
-    //     for (const securedClient of top5Client) {
-    //       const securedPieObj = {
-    //             value: securedClient.secured,
-    //           };
-    //       this.securedPieData.push(securedPieObj);
-    //       console.log(this.securedPieData);
-    //         }
-    //     const array1 = this.securedPieData;
-    //     const reduceSum = array1.reduce(this.addSecured);
-    //       }
-    // addSecured(a: number, b: number): number {return a + b;
-    //   console.log(reduceSum);
-    // }
-
-
-    // private _prepareUnsecuredData(top5Client: any []) {
-    //     this.unsecuredPieData = [];
-    //     for (const unsecuredClient of top5Client) {
-    //       const unsecuredPieObj = {
-    //             value: unsecuredClient.unsecured,
-    //           };
-    //       this.unsecuredPieData.push(unsecuredPieObj);
-    //       console.log(this.unsecuredPieData);
-    //       }
-    //       const array2 = this.unsecuredPieData;
-    //       const reducedUnsecured = array2.reduce(this.addUnsecured);
-    //   }
-
-    // addUnsecured(a: number, b: number): number {return a + b;
-    //   console.log(this.reducedUnsecured);
-    // }
 
     private _prepareAutoData(top5Client: any[]) {
       this.plotData = [];
@@ -233,27 +190,70 @@ export class CRMTop5Component implements OnInit {
                       r: 1
                   }
               ]
-            }
+            };
       this.plotData.push(plotObj);
       }
     }
 
+    private async _prepareSecuredData(top5Client: any[]) {
+        this.securedPieData = [];
+        for (const securedClient of top5Client) {
+          const securedPieObj = {
+                value: securedClient.secured,
+              };
+          this.securedPieData.push(securedPieObj);
+            }
+        const array1 = this.securedPieData;
+        let counter1 = 0;
+        for (const reduceSum1 of array1) {
+          const newSum1 = JSON.parse(reduceSum1.value);
+          counter1 += newSum1;
+        }
+        this.newCounter1 = counter1;
+        this.unsecuredPieData = [];
+        for (const unsecuredClient of top5Client) {
+          const unsecuredPieObj = {
+                value: unsecuredClient.unsecured,
+              };
+        this.unsecuredPieData.push(unsecuredPieObj);
+        }
+        const array2 = this.unsecuredPieData;
+        let counter2 = 0;
+        for (const reducedSum2 of array2) {
+          const newSum2 = JSON.parse(reducedSum2.value);
+          counter2 += newSum2;
+        }
+        this.newCounter2 = counter2;
+        await this._preparePieData();
+        }
+
+    private _preparePieData() {
+        this.pieData = [
+          {
+            name: 'Secured',
+            value: this.newCounter1
+          },
+          {
+            name: 'Unsecured',
+            value: this.newCounter2
+          },
+        ];
+    }
 
     public millions(num: number): string {
         if (typeof num !== 'number') {
-            if (num['value']) { num = num['value']}
-            else if (num['cell']) { num = num['cell']['value']}
+            if (num['value']) { num = num['value']; } else if (num['cell']) { num = num['cell']['value'];
         } // account for the graphs not passing a number
-        if(num < 1000000000) {
+        if (num < 1000000000) {
             return '$' + Math.round(num * 10 / 1000000) / 10 + 'm';
         } else {
             return '$' + Math.round(num * 10 / 1000000000) / 10 + 'b';
         }
     }
+  }
 
     public onSelect(event: any) {
         const destinationClient = this.clientList.filter( client => client.client_name === event.name)[0].client_id;
         this._router.navigate(['../../crm/detail', destinationClient]);
     }
 }
-

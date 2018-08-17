@@ -40,7 +40,7 @@
 
 <div class='container'>
   <h1 class="text-center">Acquisition Line Data</h1>
-  <div class="bar-chart" *ngIf="lineData">
+  <div class="bar-chart">
       <ngx-charts-line-chart
           [scheme]="lineColorScheme"
           [results]="lineData"
@@ -66,8 +66,8 @@
           [yAxis]="plotShowYAxis"
           [showXAxisLabel]="plotShowXAxisLabel"
           [showYAxisLabel]="plotShowYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
+          [xAxisLabel]="plotXAxisLabel"
+          [yAxisLabel]="plotYAxisLabel"
           [yAxisTickFormatting]=""
           (select)="onSelect($event)">
       </ngx-charts-bubble-chart>
@@ -76,9 +76,9 @@
 
 <div class='container'>
     <h1 class="text-center">Unsecured v. Secured Credit</h1>
-    <div class ="pie-chart">
+    <div class="pie-chart" *ngIf="pieData">
       <ngx-charts-pie-chart
-        [scheme]="colorScheme"
+        [scheme]="pieColorScheme"
         [results]="pieData"
         [gradient]="gradient"
         [legend]="showLegend"
