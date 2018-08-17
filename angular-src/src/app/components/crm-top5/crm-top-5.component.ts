@@ -19,6 +19,7 @@ export class CRMTop5Component implements OnInit {
     public top5NumberAuto;
     public top5PriceAuto;
 
+
     // bar options
     public barData;
     public barDataTwo;
@@ -49,7 +50,8 @@ export class CRMTop5Component implements OnInit {
        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
      };
 
-     // line options
+
+    // line options
     public lineData;
     public lineDataTwo;
     public lineShowXAxis = true;
@@ -57,34 +59,50 @@ export class CRMTop5Component implements OnInit {
     public lineGradient = true;
     public lineShowLegend = false;
     public lineShowXAxisLabel = true;
-    public lineXAxisLabel = 'Company';
+    public lineXAxisLabel = 'Penetration Ratio';
     public lineShowYAxisLabel = true;
-    public lineYAxisLabel = '';
+    public lineYAxisLabel = 'Total Shares';
     public lineColorScheme = {
-       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
       };
 
-
      // pie options
-    public pieShowLabels = true;
-    public pieExplodeSlices = false;
-    public pieDoughnut = true;
-    public pieData: any;
-    public pieShowLegend = true;
+    public securedPieData;
+    public unsecuredPieData;
+    public view: any[] = [1500, 1500];
+    public showXAxis = true;
+    public showYAxis = true;
+    public gradient = false;
+    public showLegend = true;
+    public showXAxisLabel = true;
+    public xAxisLabel = 'Secured';
+    public showYAxisLabel = true;
+    public yAxisLabel = 'Unsecured';
     public colorScheme = {
       domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
       };
 
-     // scatterplot options
+    public pieData: any[] = [
+      {
+        name: 'Secured',
+        value: 26026015
+      },
+      {
+        name: 'Unsecured',
+        value: 18673229
+      }
+    ];
+
+    // scatterplot options
     public plotData: any;
     public plotView: any[] = [700, 400];
     public plotShowXAxis = true;
     public plotShowYAxis = true;
-    public plotShowLegend = true;
     public plotShowXAxisLabel = true;
-    public xAxisLabel = 'Number of Autos';
-    public showYAxisLabel = true;
-    public yAxisLabel = 'Price of Autos';
+    public plotShowYAxisLabel = true;
+    public plotXAxisLabel = 'Number of Loans';
+    public plotAxisLabel = 'Total dollar amount of loans';
+
 
   constructor(private _crm: CRMDataService, private _router: Router) {}
 
@@ -104,26 +122,27 @@ export class CRMTop5Component implements OnInit {
         this.top5Credit = list.slice(0, 5);
         this._prepareCreditBarData(this.top5Credit);
 
+        // list = this._sortList(list, 'secured');
+        // this.top5Secured = list.slice(0,5 );
+        // this._prepareSecuredData(this.top5Secured);
+
+        // list = this._sortList(list, 'unsecured');
+        // this.top5Unsecured = list.slice(0, 5);
+        // this._prepareUnsecuredData(this.top5Unsecured);
+
         list = this._sortList(list, 'penetration_ratio');
         this.top5Acquisition = list.slice(0, 5);
         this._prepareAcquisitionLineData(this.top5Acquisition);
 
-        list = this._sortList(list, 'secured');
-        this.top5Secured = list.slice(0, 5);
-        this._prepareSecuredUnsecuredData(this.top5Secured);
-
-        list = this._sortList(list, 'unsecured');
-        this.top5Unsecured = list.slice(0, 5);
-        this._prepareSecuredUnsecuredData(this.top5Unsecured);
-
-        list = this._sortList(list, 'number');
-        this.top5NumberAuto = list.slice(0, 5);
-        this._prepareAutoData(this.top5NumberAuto);
+        list = this._sortList(list, 'total_shares');
+        this.top5Shares = list.slice(0, 5);
+        this._prepareAcquisitionLineData(this.top5Shares);
 
         list = this._sortList(list, 'price');
         this.top5PriceAuto = list.slice(0, 5);
         this._prepareAutoData(this.top5PriceAuto);
     }
+
 
     private _sortList(list: any[], category: string) {
         // console.log(list);
@@ -154,48 +173,71 @@ export class CRMTop5Component implements OnInit {
     }
 
     private _prepareAcquisitionLineData(top5Client: any[]) {
-      this.lineData = [];
+      this.lineData = [{
+                name: '',
+                series: []
+            }];
       for (const client of top5Client) {
-          const lineObj = {
-            name: client.client_name,
-            value: client.penetration_ratio,
-          };
-          this.lineData.push(lineObj);
-      console.log(this.lineData);
-      }
+          let lineObj = {
+                name: client.client_name,
+                value: client.penetration_ratio,
+            };
+            this.lineData[0]['series'].push(lineObj);
+        }
     }
 
-    private _prepareSecuredUnsecuredData(top5Client: any[]) {
-      this.pieData = [];
-      for (const client of top5Client) {
-        const pieObj = [
-            {
-              name: client.client_name,
-              value: client.secured,
-            }, {
-              name: client.client_name,
-              value: client.unsecured,
-            }
-          ];
-        this.pieData.push(pieObj);
-        }
-      }
+    // private _prepareSecuredData(top5Client: any[]) {
+    //     this.securedPieData = [];
+    //     for (const securedClient of top5Client) {
+    //       const securedPieObj = {
+    //             value: securedClient.secured,
+    //           };
+    //       this.securedPieData.push(securedPieObj);
+    //       console.log(this.securedPieData);
+    //         }
+    //     const array1 = this.securedPieData;
+    //     const reduceSum = array1.reduce(this.addSecured);
+    //       }
+    // addSecured(a: number, b: number): number {return a + b;
+    //   console.log(reduceSum);
+    // }
+
+
+    // private _prepareUnsecuredData(top5Client: any []) {
+    //     this.unsecuredPieData = [];
+    //     for (const unsecuredClient of top5Client) {
+    //       const unsecuredPieObj = {
+    //             value: unsecuredClient.unsecured,
+    //           };
+    //       this.unsecuredPieData.push(unsecuredPieObj);
+    //       console.log(this.unsecuredPieData);
+    //       }
+    //       const array2 = this.unsecuredPieData;
+    //       const reducedUnsecured = array2.reduce(this.addUnsecured);
+    //   }
+
+    // addUnsecured(a: number, b: number): number {return a + b;
+    //   console.log(this.reducedUnsecured);
+    // }
 
     private _prepareAutoData(top5Client: any[]) {
       this.plotData = [];
       for (const client of top5Client) {
-        const plotObj = [
-            {
+          const plotObj = {
               name: client.client_name,
-              value: Math.ceil((Math.random() * 100)),
-            }, {
-              name: client.client_name,
-              value: client.auto
+              series: [
+                  {
+                      name: client.client_name,
+                      x: Math.ceil((Math.random() * 10)),
+                      y: JSON.parse(client.auto),
+                      r: 1
+                  }
+              ]
             }
-          ];
-        this.plotData.push(plotObj);
-        }
+      this.plotData.push(plotObj);
       }
+    }
+
 
     public millions(num: number): string {
         if (typeof num !== 'number') {
