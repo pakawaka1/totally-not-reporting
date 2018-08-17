@@ -150,22 +150,6 @@ export class CRMTop5Component implements OnInit {
         }
     }
 
-    private _prepareSecuredUnsecuredData(top5Client: any[]) {
-      this.pieData = [];
-      for (const client of top5Client) {
-        const pieObj = [
-            {
-              name: client.client_name,
-              value: client.secured,
-            }, {
-              name: client.client_name,
-              value: client.unsecured,
-            }
-          ];
-        this.pieData.push(pieObj);
-        }
-      }
-
     private _prepareAutoData(top5Client: any[]) {
         this.plotData = [];
         for (const client of top5Client) {
