@@ -10,14 +10,14 @@ export class HttpService {
     constructor(private _http: HttpClient) {
 
         // AWS
-        this._apiURL = 'http://tnr-3.ttm76kf9pn.us-west-2.elasticbeanstalk.com:8080/api/';
+        // this._apiURL = 'http://tnr-3.ttm76kf9pn.us-west-2.elasticbeanstalk.com:8080/api/';
 
-        // if (window.navigator.platform.toLowerCase().includes('win')) {
-        //     this._apiURL = 'http://192.168.99.100:8080/api/';
-        // } else {
-        //     this._apiURL = 'http://localhost:8080/api/';
-        // }
-    }
+    if (window.navigator.platform.toLowerCase().includes('win')) {
+          this._apiURL = 'http://192.168.99.100:8080/api/';
+          } else {
+             this._apiURL = 'http://localhost:8080/api/';
+          }
+     }
 
     public post(url: string, payload: any) {
         const headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
